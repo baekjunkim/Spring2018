@@ -36,29 +36,31 @@ public class Main {
                 fileList.clear();
                 String filePath = command.substring(6);
                 System.out.println("Indexing " + filePath);
-                Scanner file = new Scanner(new File(filePath)).useDelimiter("\\.|\\!|\\?");
-                PorterStemmer ps = new PorterStemmer();
-                while (file.hasNext()) {
-                    String s = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase();
-                    String[] list = s.split("\\s");
-                    for (int i = 0; i < list.length; i++) {
-                        if (stop.contains(list[i])) {
-                            list[i] = "";
-                        } else {
-                            list[i] = ps.stem(list[i]);
+                try (Scanner file = new Scanner(new File(filePath)).useDelimiter("\\.|\\!|\\?")) {
+                    PorterStemmer ps = new PorterStemmer();
+                    while (file.hasNext()) {
+                        String s = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase();
+                        String[] list = s.split("\\s");
+                        for (int i = 0; i < list.length; i++) {
+                            if (stop.contains(list[i])) {
+                                list[i] = "";
+                            } else {
+                                list[i] = ps.stem(list[i]);
+                            }
+                        }
+                        ArrayList<String> arr = new ArrayList<>();
+                        for (String word : list) {
+                            if (!word.equals("")) {
+                                arr.add(word);
+                            }
+                        }
+                        if (arr.size() > 0) {
+                            fileList.add(arr);
                         }
                     }
-                    ArrayList<String> arr = new ArrayList<>();
-                    for (String word : list) {
-                        if (!word.equals("")) {
-                            arr.add(word);
-                        }
-                    }
-                    if (arr.size() > 0) {
-                        fileList.add(arr);
-                    }
+                } catch (FileNotFoundException e) {
+                    System.err.println("File Not Found");
                 }
-                file.close();
             } else if (command.equals("sentences")) {
                 System.out.println(fileList.toString());
                 System.out.println("Num sentences");

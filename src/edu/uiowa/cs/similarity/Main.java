@@ -18,7 +18,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        ArrayList<ArrayList<String>> fileList = new ArrayList<>();
+        ArrayList<TreeSet<String>> sentences = new ArrayList<>();
         HashMap<String, HashMap<String, Integer>> vectors = new HashMap<>();
 
         while (true) {
@@ -34,10 +34,10 @@ public class Main {
                     stop.add(stopwords.next().replace("'", ""));
                 }
                 // index file
-                fileList.clear();
                 String filePath = command.substring(6);
                 System.out.println("Indexing " + filePath);
                 try (Scanner file = new Scanner(new File(filePath)).useDelimiter("\\.|\\!|\\?")) {
+                    sentences.clear();
                     PorterStemmer ps = new PorterStemmer();
                     while (file.hasNext()) {
                         String s = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase();
@@ -49,23 +49,24 @@ public class Main {
                                 list[i] = ps.stem(list[i]);
                             }
                         }
-                        ArrayList<String> arr = new ArrayList<>();
-                        for (int i = 0; i < list.length; i++) {
-                            if (!list[i].equals("")) {
-                                arr.add(list[i]);
+                        TreeSet<String> sentence = new TreeSet<>();
+                        for (String word : list) {
+                            if (!word.equals("")) {
+                                sentence.add(word);
                             }
                         }
-                        if (arr.size() > 0) {
-                            fileList.add(arr);
+                        if (sentence.size() > 0) {
+                            sentences.add(sentence);
                         }
                     }
+                    
                 } catch (FileNotFoundException e) {
                     System.err.println("File Not Found");
                 }
             } else if (command.equals("sentences")) {
-                System.out.println(fileList.toString());
+                System.out.println(sentences.toString());
                 System.out.println("Num sentences");
-                System.out.println(fileList.size());
+                System.out.println(sentences.size());
             } else if (command.equals("vectors")) {
                 System.out.println(vectors.toString());
             } else if (command.equals("quit")) {

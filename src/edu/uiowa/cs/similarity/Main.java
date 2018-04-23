@@ -41,14 +41,21 @@ public class Main {
                     String s = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase();
                     String[] list = s.split("\\s");
                     for (int i = 0; i < list.length; i++) {
-                        if (stop.contains(list[i])) list[i] = "";
-                        else list[i] = ps.stem(list[i]);
+                        if (stop.contains(list[i])) {
+                            list[i] = "";
+                        } else {
+                            list[i] = ps.stem(list[i]);
+                        }
                     }
                     ArrayList<String> arr = new ArrayList<>();
                     for (int i = 0; i < list.length; i++) {
-                        if (!list[i].equals("")) arr.add(list[i]);
+                        if (!list[i].equals("")) {
+                            arr.add(list[i]);
+                        }
                     }
-                    if (arr.size() > 0) fileList.add(arr);
+                    if (arr.size() > 0) {
+                        fileList.add(arr);
+                    }
                 }
                 file.close();
             } else if (command.equals("sentences")) {

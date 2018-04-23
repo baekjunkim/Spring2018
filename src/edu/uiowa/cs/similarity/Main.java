@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    // index C:\Users\Baekjun Kim\Desktop\U of Iowa\2017 - 2018 academic year\2018 Spring (13sh - 97 total)\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\Assignment\Project\cleanup_test.txt
 
     private static void printMenu() {
         System.out.println("Supported commands:");
@@ -32,7 +33,7 @@ public class Main {
                     stop.add(stopwords.next().replace("'", ""));
                 }
                 // index file
-                // index C:\Users\Baekjun Kim\Desktop\U of Iowa\2017 - 2018 academic year\2018 Spring (13sh - 97 total)\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\Assignment\Project\cleanup_test.txt
+                fileList.clear();
                 String filePath = command.substring(6);
                 System.out.println("Indexing " + filePath);
                 Scanner file = new Scanner(new File(filePath)).useDelimiter("\\.|\\!|\\?");
@@ -48,9 +49,9 @@ public class Main {
                         }
                     }
                     ArrayList<String> arr = new ArrayList<>();
-                    for (int i = 0; i < list.length; i++) {
-                        if (!list[i].equals("")) {
-                            arr.add(list[i]);
+                    for (String word : list) {
+                        if (!word.equals("")) {
+                            arr.add(word);
                         }
                     }
                     if (arr.size() > 0) {

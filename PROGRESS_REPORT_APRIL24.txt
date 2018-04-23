@@ -1,9 +1,11 @@
 What is the status of your project?
 
-
+Finished Part 1
 
 What has each team done to ensure the success of the team?
 
-
+One wrote the code and the other revised after all
 
 What can each team member do going forward to ensure the success of the team?
+
+After choosing whom will work on which part, one can revise the part where the other chose to work on.

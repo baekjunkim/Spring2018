@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         ArrayList<ArrayList<String>> fileList = new ArrayList<>();
-        
+
         while (true) {
             System.out.print("> ");
             String command = input.readLine();
@@ -26,40 +26,31 @@ public class Main {
                 printMenu();
             } else if (command.contains("index ")) {
                 // stop words
-                Scanner stopwords = new Scanner(new File("stopwords.txt"));
+                Scanner stopwords = new Scanner(new File("C:\\Users\\Baekjun Kim\\Desktop\\U of Iowa\\2017 - 2018 academic year\\2018 Spring (13sh - 97 total)\\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\\Assignment\\Project\\stopwords.txt"));
                 HashSet<String> stop = new HashSet<>();
                 while (stopwords.hasNext()) {
                     stop.add(stopwords.next().replace("'", ""));
                 }
                 // index file
+                // index C:\Users\Baekjun Kim\Desktop\U of Iowa\2017 - 2018 academic year\2018 Spring (13sh - 97 total)\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\Assignment\Project\cleanup_test.txt
                 String filePath = command.substring(6);
                 System.out.println("Indexing " + filePath);
                 Scanner file = new Scanner(new File(filePath)).useDelimiter("\\.|\\!|\\?");
                 PorterStemmer ps = new PorterStemmer();
                 while (file.hasNext()) {
-                    String[] list = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase().split("\\s");
+                    String s = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase();
+                    String[] list = s.split("\\s");
                     for (int i = 0; i < list.length; i++) {
-                        if (stop.contains(list[i])) {
-                            System.out.println("remove: " + list[i]);
-                            list[i] = "";
-                        } else {
-                            list[i] = ps.stem(list[i]);
-                            System.out.println("stem: " + list[i] + " / " + stop.contains(list[i]));
-                        }
+                        if (stop.contains(list[i])) list[i] = "";
+                        else list[i] = ps.stem(list[i]);
                     }
                     ArrayList<String> arr = new ArrayList<>();
                     for (int i = 0; i < list.length; i++) {
-                        if (!list[i].equals("")) {
-                            arr.add(list[i]);
-                        }
+                        if (!list[i].equals("")) arr.add(list[i]);
                     }
-                    if (arr.size() > 0) {
-                        fileList.add(arr);
-                    }
+                    if (arr.size() > 0) fileList.add(arr);
                 }
                 file.close();
-
-                System.out.println(fileList.toString());
             } else if (command.equals("sentences")) {
                 System.out.println(fileList.toString());
                 System.out.println("Num sentences");

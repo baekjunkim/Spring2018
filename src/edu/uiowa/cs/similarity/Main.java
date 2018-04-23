@@ -42,24 +42,17 @@ public class Main {
                     while (file.hasNext()) {
                         String s = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase();
                         String[] list = s.split("\\s");
-                        for (int i = 0; i < list.length; i++) {
-                            if (stop.contains(list[i])) {
-                                list[i] = "";
-                            } else {
-                                list[i] = ps.stem(list[i]);
-                            }
-                        }
                         ArrayList<String> sentence = new ArrayList<>();
-                        for (String word : list) {
-                            if (!word.equals("")) {
-                                sentence.add(word);
+                        for (int i = 0; i < list.length; i++) {
+                            if (!stop.contains(list[i]) && !list[i].equals("")) {
+                                sentence.add(ps.stem(list[i]));
                             }
                         }
                         if (sentence.size() > 0) {
                             sentences.add(sentence);
                         }
                     }
-                    
+
                 } catch (FileNotFoundException e) {
                     System.err.println("File Not Found");
                 }

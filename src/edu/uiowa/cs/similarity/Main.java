@@ -1,7 +1,6 @@
 package edu.uiowa.cs.similarity;
 
 import opennlp.tools.stemmer.*;
-
 import java.io.*;
 import java.util.*;
 
@@ -13,12 +12,14 @@ public class Main {
         System.out.println("help - Print the supported commands");
         System.out.println("index FILE - Read in and index the file given by FILE");
         System.out.println("sentences - Print currently indexed sentences");
+        System.out.println("vectors - Print semantic descriptor vector for each unique word");
         System.out.println("quit - Quit this program");
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         ArrayList<ArrayList<String>> fileList = new ArrayList<>();
+        HashMap<String, HashMap<String, Integer>> vectors = new HashMap<>();
 
         while (true) {
             System.out.print("> ");
@@ -49,9 +50,9 @@ public class Main {
                             }
                         }
                         ArrayList<String> arr = new ArrayList<>();
-                        for (String word : list) {
-                            if (!word.equals("")) {
-                                arr.add(word);
+                        for (int i = 0; i < list.length; i++) {
+                            if (!list[i].equals("")) {
+                                arr.add(list[i]);
                             }
                         }
                         if (arr.size() > 0) {
@@ -65,6 +66,8 @@ public class Main {
                 System.out.println(fileList.toString());
                 System.out.println("Num sentences");
                 System.out.println(fileList.size());
+            } else if (command.equals("vectors")) {
+                System.out.println(vectors.toString());
             } else if (command.equals("quit")) {
                 System.exit(0);
             } else {

@@ -18,7 +18,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        ArrayList<TreeSet<String>> sentences = new ArrayList<>();
+        ArrayList<ArrayList<String>> sentences = new ArrayList<>();
         HashMap<String, HashMap<String, Integer>> vectors = new HashMap<>();
 
         while (true) {
@@ -49,7 +49,7 @@ public class Main {
                                 list[i] = ps.stem(list[i]);
                             }
                         }
-                        TreeSet<String> sentence = new TreeSet<>();
+                        ArrayList<String> sentence = new ArrayList<>();
                         for (String word : list) {
                             if (!word.equals("")) {
                                 sentence.add(word);

@@ -1,11 +1,9 @@
 package edu.uiowa.cs.similarity;
 
-import opennlp.tools.stemmer.*;
 import java.io.*;
 import java.util.*;
 
 public class Main {
-    // index C:\Users\Baekjun Kim\Desktop\U of Iowa\2017 - 2018 academic year\2018 Spring (13sh - 97 total)\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\Assignment\Project\cleanup_test.txt
 
     private static void printMenu() {
         System.out.println("Supported commands:");
@@ -13,13 +11,16 @@ public class Main {
         System.out.println("index FILE - Read in and index the file given by FILE");
         System.out.println("sentences - Print currently indexed sentences");
         System.out.println("vectors - Print semantic descriptor vector for each unique word");
+        System.out.println("topj WORD INTEGER - Print the INTEGER most simliar words to WORD");
         System.out.println("quit - Quit this program");
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        HashSet<String> words = new HashSet<>();
         ArrayList<ArrayList<String>> sentences = new ArrayList<>();
-        HashMap<String, HashMap<String, Integer>> vectors = new HashMap<>();
+        HashMap<String, HashMap<String, Double>> vectors = new HashMap<>();
+        ArrayList<String> topj = new ArrayList<>();
 
         while (true) {
             System.out.print("> ");
@@ -27,41 +28,33 @@ public class Main {
             if (command.equals("help") || command.equals("h")) {
                 printMenu();
             } else if (command.contains("index ")) {
-                // stop words
-                Scanner stopwords = new Scanner(new File("C:\\Users\\Baekjun Kim\\Desktop\\U of Iowa\\2017 - 2018 academic year\\2018 Spring (13sh - 97 total)\\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\\Assignment\\Project\\stopwords.txt"));
-                HashSet<String> stop = new HashSet<>();
-                while (stopwords.hasNext()) {
-                    stop.add(stopwords.next().replace("'", ""));
-                }
-                // index file
                 String filePath = command.substring(6);
                 System.out.println("Indexing " + filePath);
-                try (Scanner file = new Scanner(new File(filePath)).useDelimiter("\\.|\\!|\\?")) {
-                    sentences.clear();
-                    PorterStemmer ps = new PorterStemmer();
-                    while (file.hasNext()) {
-                        String s = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase();
-                        String[] list = s.split("\\s");
-                        ArrayList<String> sentence = new ArrayList<>();
-                        for (int i = 0; i < list.length; i++) {
-                            if (!stop.contains(list[i]) && !list[i].equals("")) {
-                                sentence.add(ps.stem(list[i]));
-                            }
-                        }
-                        if (sentence.size() > 0) {
-                            sentences.add(sentence);
-                        }
-                    }
-
+                try {
+                    SentencesCommand indexSentences = new SentencesCommand();
+                    indexSentences.sentences(sentences, filePath, words);
+                    VectorsCommand indexVectors = new VectorsCommand();
+                    indexVectors.vectors(sentences, vectors);
                 } catch (FileNotFoundException e) {
                     System.err.println("File Not Found");
                 }
             } else if (command.equals("sentences")) {
-                System.out.println(sentences.toString());
+                System.out.println(sentences);
                 System.out.println("Num sentences");
                 System.out.println(sentences.size());
             } else if (command.equals("vectors")) {
-                System.out.println(vectors.toString());
+                System.out.println(vectors);
+            } else if (command.contains("topj ")) {
+                int space = command.lastIndexOf(" ");
+                String Q = command.substring(5, space);
+                Integer J = Integer.parseInt(command.substring(space + 1));
+                TopjCommand sanity = new TopjCommand();
+                if (sanity.Qcheck(words, Q)) {
+                    sanity.topj(words, vectors, topj, Q, J);
+                    System.out.println(topj);
+                } else {
+                    System.err.println("Cannot compute top-" + J + " similarity to " + Q);
+                }
             } else if (command.equals("quit")) {
                 System.exit(0);
             } else {

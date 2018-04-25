@@ -12,7 +12,7 @@ public class Entry implements Comparable<Entry> {
 
     @Override
     public int compareTo(Entry other) {
-        return (int) ((this.value - other.value) *1000);
+        return (int) ((this.value - other.value) * 1000);
     }
 
     @Override

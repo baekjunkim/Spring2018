@@ -12,7 +12,7 @@ public class Main {
         System.out.println("sentences - Print currently indexed sentences");
         System.out.println("vectors - Print semantic descriptor vector for each unique word");
         System.out.println("topj WORD INTEGER - Print the INTEGER most simliar words to WORD");
-        System.out.println("measure MEASURE - Change similarity measure for topj as MEASURE (select from \"cos\", \"eun\", and \"eunnorm\")");
+        System.out.println("measure MEASURE - Change similarity measure for topj as MEASURE (choose one from \"cos\", \"eun\", and \"eunnorm\")");
         System.out.println("quit - Quit this program");
     }
 

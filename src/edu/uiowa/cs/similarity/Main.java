@@ -12,6 +12,7 @@ public class Main {
         System.out.println("sentences - Print currently indexed sentences");
         System.out.println("vectors - Print semantic descriptor vector for each unique word");
         System.out.println("topj WORD INTEGER - Print the INTEGER most simliar words to WORD");
+        System.out.println("measure MEASURE - Change similarity measure for topj as MEASURE (select from \"cos\", \"eun\", and \"eunnorm\")");
         System.out.println("quit - Quit this program");
     }
 
@@ -21,6 +22,7 @@ public class Main {
         ArrayList<ArrayList<String>> sentences = new ArrayList<>();
         HashMap<String, HashMap<String, Double>> vectors = new HashMap<>();
         ArrayList<String> topj = new ArrayList<>();
+        String similarityMeasure = "cos";
 
         while (true) {
             System.out.print("> ");
@@ -48,12 +50,23 @@ public class Main {
                 int space = command.lastIndexOf(" ");
                 String Q = command.substring(5, space);
                 Integer J = Integer.parseInt(command.substring(space + 1));
-                TopjCommand sanity = new TopjCommand();
-                if (sanity.Qcheck(words, Q)) {
-                    sanity.topj(words, vectors, topj, Q, J);
+                TopjCommand sanity = new TopjCommand(similarityMeasure, Q, J);
+                if (sanity.Qcheck(words)) {
+                    sanity.topj(words, vectors, topj);
                     System.out.println(topj);
                 } else {
                     System.err.println("Cannot compute top-" + J + " similarity to " + Q);
+                }
+            } else if (command.contains("measure ")) {
+                String measurement = command.substring(8);
+                if (measurement.equals("cos")) {
+                    similarityMeasure = "cos";
+                } else if (measurement.equals("euc")) {
+                    similarityMeasure = "euc";
+                } else if (measurement.equals("eucnorm")) {
+                    similarityMeasure = "eucnorm";
+                } else {
+                    System.err.println("Unrecognized command");
                 }
             } else if (command.equals("quit")) {
                 System.exit(0);

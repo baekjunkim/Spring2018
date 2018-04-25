@@ -75,11 +75,11 @@ public class TopjCommand {
         duplicate.addAll(Jvalue.keySet());
         for (String word : duplicate) {
             if (Qvalue.containsKey(word) && Jvalue.containsKey(word)) {
-                den += (Qvalue.get(word) / numQ) - (Jvalue.get(word) / numJ);
+                den += Math.pow(((Qvalue.get(word) / numQ) - (Jvalue.get(word) / numJ)), 2);
             } else if (Qvalue.containsKey(word) && !Jvalue.containsKey(word)) {
-                den += Qvalue.get(word) / numQ;
+                den += Math.pow((Qvalue.get(word) / numQ), 2);
             } else {
-                den += Jvalue.get(word) / numJ;
+                den += Math.pow((Jvalue.get(word) / numJ), 2);
             }
         }
         return -den;

@@ -6,7 +6,13 @@ import java.util.*;
 
 public class SentencesCommand {
 
-    public void sentences(ArrayList<ArrayList<String>> sentences, String filePath, HashSet<String> words) throws FileNotFoundException {
+    String filePath;
+
+    public SentencesCommand(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void sentences(ArrayList<ArrayList<String>> sentences, HashSet<String> words) throws FileNotFoundException {
         // import stopwords
         Scanner stopwords = new Scanner(new File("C:\\Users\\Baekjun Kim\\Desktop\\U of Iowa\\2017 - 2018 academic year\\2018 Spring (13sh - 97 total)\\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\\Assignment\\Project\\stopwords.txt"));
         HashSet<String> stop = new HashSet<>();

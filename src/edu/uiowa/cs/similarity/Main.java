@@ -33,8 +33,8 @@ public class Main {
                 String filePath = command.substring(6);
                 System.out.println("Indexing " + filePath);
                 try {
-                    SentencesCommand indexSentences = new SentencesCommand();
-                    indexSentences.sentences(sentences, filePath, words);
+                    SentencesCommand indexSentences = new SentencesCommand(filePath);
+                    indexSentences.sentences(sentences, words);
                     VectorsCommand indexVectors = new VectorsCommand();
                     indexVectors.vectors(sentences, vectors);
                 } catch (FileNotFoundException e) {

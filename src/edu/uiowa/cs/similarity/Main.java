@@ -12,7 +12,7 @@ public class Main {
         System.out.println("sentences - Print currently indexed sentences");
         System.out.println("vectors - Print semantic descriptor vector for each unique word");
         System.out.println("topj WORD INTEGER - Print the INTEGER most simliar words to WORD");
-        System.out.println("measure MEASURE - Change similarity measure for topj as MEASURE (choose one from \"cos\", \"eun\", and \"eunnorm\")");
+        System.out.println("measure MEASURE - Change similarity measure for topj as MEASURE (choose one from \"cos\", \"euc\", and \"eucnorm\")");
         System.out.println("quit - Quit this program");
     }
 
@@ -61,10 +61,13 @@ public class Main {
                 String measurement = command.substring(8);
                 if (measurement.equals("cos")) {
                     similarityMeasure = "cos";
+                    System.out.println("Similarity measure is cosine similarity");
                 } else if (measurement.equals("euc")) {
                     similarityMeasure = "euc";
+                    System.out.println("Similarity measure is negative euclidean distance");
                 } else if (measurement.equals("eucnorm")) {
                     similarityMeasure = "eucnorm";
+                    System.out.println("Similarity measure is negative euclidean distance between norms");
                 } else {
                     System.err.println("Unrecognized command");
                 }

@@ -35,6 +35,7 @@ public class SentencesCommand {
             if (sentence.size() > 0) {
                 sentences.add(sentence);
             }
+            // for topj command
             if (sentence.size() > 1) {
                 for (String word : sentence) {
                     words.add(word);

@@ -8,6 +8,12 @@ public class TopjCommand {
     String Q;
     Integer J;
 
+    public TopjCommand(String measure) {
+        this.measure = measure;
+        this.Q = "";
+        this.J = 0;
+    }
+    
     public TopjCommand(String measure, String Q, Integer J) {
         this.measure = measure;
         this.Q = Q;
@@ -57,7 +63,7 @@ public class TopjCommand {
         for (Double d : cal.values()) {
             num += Math.pow(d, 2);
         }
-        return -num;
+        return -Math.sqrt(num);
     }
 
     public double eucnorm(HashMap<String, Double> Qvalue, HashMap<String, Double> Jvalue) {
@@ -65,10 +71,12 @@ public class TopjCommand {
         for (Double q : Qvalue.values()) {
             numQ += Math.pow(q, 2);
         }
+        numQ = Math.sqrt(numQ);
         double numJ = 0;
         for (Double j : Jvalue.values()) {
             numJ += Math.pow(j, 2);
         }
+        numJ = Math.sqrt(numJ);
         double den = 0;
         HashSet<String> duplicate = new HashSet<>();
         duplicate.addAll(Qvalue.keySet());
@@ -82,7 +90,7 @@ public class TopjCommand {
                 den += Math.pow((Jvalue.get(word) / numJ), 2);
             }
         }
-        return -den;
+        return -Math.sqrt(den);
     }
 
     public double similarity(HashMap<String, Double> Qvalue, HashMap<String, Double> Jvalue) {

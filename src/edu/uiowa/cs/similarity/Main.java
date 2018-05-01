@@ -8,11 +8,12 @@ public class Main {
     private static void printMenu() {
         System.out.println("Supported commands:");
         System.out.println("help - Print the supported commands");
-        System.out.println("index FILE - Read in and index the file given by FILE");
+        System.out.println("index FILE - Read in and index the file given by FILE(String)");
         System.out.println("sentences - Print currently indexed sentences");
         System.out.println("vectors - Print semantic descriptor vector for each unique word");
-        System.out.println("topj WORD INTEGER - Print the INTEGER most simliar words to WORD");
+        System.out.println("topj WORD J - Print the J(Integer) most simliar words to WORD(String)");
         System.out.println("measure MEASURE - Change similarity measure for topj as MEASURE (choose one from \"cos\", \"euc\", and \"eucnorm\")");
+        System.out.println("kmeans K ITERS - Run and print K(Integer)-mean clustering for ITERS(Integer) iterations");
         System.out.println("quit - Quit this program");
     }
 
@@ -71,6 +72,15 @@ public class Main {
                 } else {
                     System.err.println("Unrecognized command");
                 }
+            } else if (command.contains("kmeans ")) {
+                int[] spaces = new int[2];
+                spaces[0] = command.indexOf(" ");
+                spaces[1] = command.lastIndexOf(" ");
+                Integer K = Integer.parseInt(command.substring(spaces[0] + 1, spaces[1]));
+                Integer iters = Integer.parseInt(command.substring(spaces[1]+1));
+                Kmeans kmean  = new Kmeans(K, iters);
+                
+                
             } else if (command.equals("quit")) {
                 System.exit(0);
             } else {

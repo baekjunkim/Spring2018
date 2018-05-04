@@ -2,8 +2,8 @@ package edu.uiowa.cs.similarity;
 
 public class Entry implements Comparable<Entry> {
 
-    private final String key;
-    private final double value;
+    public final String key;
+    public final double value;
 
     public Entry(String key, double value) {
         this.key = key;

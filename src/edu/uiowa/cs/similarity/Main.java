@@ -16,7 +16,7 @@ public class Main {
         System.out.println("kmeans K ITERS - Run and print K(Integer)-mean clustering for ITERS(Integer) iterations");
         System.out.println("quit - Quit this program");
     }
-
+//index C:\Users\Baekjun Kim\Desktop\U of Iowa\2017 - 2018 academic year\2018 Spring (13sh - 97 total)\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\Assignment\Project\easy_sanity_test.txt
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         HashSet<String> words = new HashSet<>();
@@ -24,6 +24,7 @@ public class Main {
         HashMap<String, HashMap<String, Double>> vectors = new HashMap<>();
         ArrayList<String> topj = new ArrayList<>();
         String similarityMeasure = "cos";
+        ArrayList<HashSet<String>> cluster = new ArrayList<>();
 
         while (true) {
             System.out.print("> ");
@@ -51,9 +52,12 @@ public class Main {
                 int space = command.lastIndexOf(" ");
                 String Q = command.substring(5, space);
                 Integer J = Integer.parseInt(command.substring(space + 1));
-                TopjCommand sanity = new TopjCommand(similarityMeasure, Q, J);
+                TopjCommand sanity = new TopjCommand(similarityMeasure, Q);
                 if (sanity.Qcheck(words)) {
-                    sanity.topj(words, vectors, topj);
+                    PriorityQueue<Entry> pairs = sanity.topj(words, vectors, topj);
+                    for (int i = 0; i < J; i++) {
+                        topj.add("Pair" + pairs.poll().toString());
+                    }
                     System.out.println(topj);
                 } else {
                     System.err.println("Cannot compute top-" + J + " similarity to " + Q);
@@ -79,7 +83,8 @@ public class Main {
                 Integer K = Integer.parseInt(command.substring(spaces[0] + 1, spaces[1]));
                 Integer iters = Integer.parseInt(command.substring(spaces[1]+1));
                 Kmeans kmean  = new Kmeans(K, iters);
-                
+                kmean.k_means(cluster, words, vectors);
+                System.out.println(cluster);
                 
             } else if (command.equals("quit")) {
                 System.exit(0);

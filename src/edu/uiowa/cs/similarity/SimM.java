@@ -48,7 +48,7 @@ public class SimM {
 
     public double euc(HashMap<String, Double> Qvalue, HashMap<String, Double> Jvalue) {
         Set<String> keysJ = Jvalue.keySet();
-        HashMap<String, Double> cal = Qvalue;
+        HashMap<String, Double> cal = new HashMap<>(Qvalue);
         for (String keyJ : keysJ) {
             if (!cal.containsKey(keyJ)) {
                 cal.put(keyJ, Jvalue.get(keyJ));
@@ -75,18 +75,22 @@ public class SimM {
             numJ += Math.pow(j, 2);
         }
         numJ = Math.sqrt(numJ);
-        double den = 0;
-        HashSet<String> duplicate = new HashSet<>();
-        duplicate.addAll(Qvalue.keySet());
-        duplicate.addAll(Jvalue.keySet());
-        for (String word : duplicate) {
-            if (Qvalue.containsKey(word) && Jvalue.containsKey(word)) {
-                den += Math.pow(((Qvalue.get(word) / numQ) - (Jvalue.get(word) / numJ)), 2);
-            } else if (Qvalue.containsKey(word) && !Jvalue.containsKey(word)) {
-                den += Math.pow((Qvalue.get(word) / numQ), 2);
+        Set<String> keysJ = Jvalue.keySet();
+        HashMap<String, Double> cal = new HashMap<>(Qvalue);
+        for (String keyQ : cal.keySet()) {
+            cal.replace(keyQ, cal.get(keyQ) / numQ);
+        }
+        for (String keyJ : keysJ) {
+            if (!cal.containsKey(keyJ)) {
+                cal.put(keyJ, Jvalue.get(keyJ) / numJ);
             } else {
-                den += Math.pow((Jvalue.get(word) / numJ), 2);
+                Double temp = cal.get(keyJ);
+                cal.replace(keyJ, temp - (Jvalue.get(keyJ) / numJ));
             }
+        }
+        double den = 0;
+        for (Double d : cal.values()) {
+            den += Math.pow(d, 2);
         }
         return -Math.sqrt(den);
     }

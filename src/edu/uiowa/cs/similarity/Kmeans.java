@@ -13,42 +13,75 @@ public class Kmeans {
     }
 
     public void k_means(ArrayList<HashSet<String>> cluster, HashSet<String> words, HashMap<String, HashMap<String, Double>> vectors) {
+        ArrayList<PriorityQueue<Entry>> pairs = new ArrayList<>();
         cluster.clear();
+        // generate k random points
         String[] centroid = new String[K];
-        for (int i = 0, j = 0; i < K; i++) {
-            int random = new Random().nextInt(words.size());
+        for (int k = 0; k < K; k++) {
+            int random_assign = new Random().nextInt(words.size());
+            int random = 0;
             for (String word : words) {
-                if (random == j) {
-                    centroid[i] = word;
+                if (random_assign == random) {
+                    centroid[k] = word;
                     break;
                 } else {
-                    j++;
+                    random++;
                 }
             }
         }
-        ArrayList<PriorityQueue<Entry>> pairs = new ArrayList<>();
         SimM Measure = new SimM("euc");
+        // for i in 0 to iters
         for (int i = 0; i < iters; i++) {
+            System.out.println("--------------------------------------------------"); /////////
+//            System.out.println(i);
             pairs.clear();
+            // clusters = [[], [], [], ..., []] // k of these
+            for (int k = 0; k < K; k++) {
+                pairs.add(new PriorityQueue<>());
+            }
+            // for p in points
+            // find m in means s.t. euclidean_distance(m, p) is minimized
             for (String word : words) {
-                int clus = 0;
-                double clu = Double.MIN_VALUE;
-                for (int j = 0; j < K; j++) {
-                    double compare = Measure.similarity(vectors.get(centroid[j]), vectors.get(word));
-                    if (clu < compare) {
-                        clu = compare;
-                        clus = j;
+                int index = 0;
+                double distance = -Double.MAX_VALUE;
+                for (int k = 0; k < K; k++) {
+                    double compare = Measure.similarity(vectors.get(centroid[k]), vectors.get(word));
+                    if (distance < compare) {
+                        distance = compare;
+                        index = k;
                     }
                 }
-                // clusters from instruction
-                pairs.get(clus).add(new Entry(word, clu));
-                
+                pairs.get(index).add(new Entry(word, distance));
             }
-            // centroid re-setting
-            for (int k = 0; i < K; i++) {
-                centroid[i] = pairs.get(k).get(pairs.get(k).size() / 2);
+            // to find average distance
+            //// from here
+            double total_dis = 0;
+            for (int k = 0; k < K; k++) {
+                for (Entry e : pairs.get(k)) {
+                    total_dis += e.value;
+                    System.out.println(e.value);
+                }
+            }
+            System.out.println(total_dis / words.size());
+            //// to here
+            for (int k = 0; k < K; k++) {
+                PriorityQueue<Entry> center = new PriorityQueue<>((a, b) -> b.compareTo(a));
+                for (Entry e1 : pairs.get(k)) {
+                    double distance_sum = 0;
+                    for (Entry e2 : pairs.get(k)) {
+                        distance_sum += Measure.similarity(vectors.get(e1.key), vectors.get(e2.key));
+                    }
+                    center.add(new Entry(e1.key, distance_sum));
+                    centroid[k] = center.poll().key;
+                }
+            }
+        }
+        for (int k = 0; k < K; k++) {
+            cluster.add(new HashSet<>());
+            int s = pairs.get(k).size();
+            for (int j = 0; j < s; j++) {
+                cluster.get(k).add(pairs.get(k).poll().key);
             }
         }
     }
-
 }

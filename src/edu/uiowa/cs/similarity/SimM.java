@@ -94,5 +94,4 @@ public class SimM {
         }
         return -Math.sqrt(den);
     }
-
 }

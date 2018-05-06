@@ -12,7 +12,9 @@ public class SentencesCommand {
         this.filePath = filePath;
     }
 
-    public void sentences(ArrayList<ArrayList<String>> sentences, HashSet<String> words) throws FileNotFoundException {
+    public void sentences(
+            ArrayList<ArrayList<String>> sentences, 
+            HashSet<String> words) throws FileNotFoundException {
         // import stopwords
         Scanner stopwords = new Scanner(new File("stopwords.txt"));
         HashSet<String> stop = new HashSet<>();
@@ -21,7 +23,6 @@ public class SentencesCommand {
         }
         // index file
         Scanner file = new Scanner(new File(filePath)).useDelimiter("\\.|\\!|\\?");
-        sentences.clear();
         PorterStemmer ps = new PorterStemmer();
         while (file.hasNext()) {
             String s = file.next().trim().replace("\r\n", " ").replaceAll(",|--|:|;|\"|'", "").toLowerCase();

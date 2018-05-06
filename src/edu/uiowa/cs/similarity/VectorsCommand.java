@@ -4,7 +4,10 @@ import java.util.*;
 
 public class VectorsCommand {
 
-    public void vectors(ArrayList<ArrayList<String>> sentences, HashMap<String, HashMap<String, Double>> vectors) {
+    public void vectors(
+            ArrayList<ArrayList<String>> sentences, 
+            HashMap<String, HashMap<String, Double>> vectors) {
+        vectors.clear();
         for (ArrayList<String> sentence : sentences) {
             HashSet<String> uniqueWord = new HashSet<>();
             if (sentence.size() > 1) {

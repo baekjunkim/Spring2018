@@ -14,9 +14,11 @@ public class Main {
         System.out.println("topj WORD J - Print the J(Integer) most simliar words to WORD(String)");
         System.out.println("measure MEASURE - Change similarity measure for topj as MEASURE (choose one from \"cos\", \"euc\", and \"eucnorm\")");
         System.out.println("kmeans K ITERS - Run and print K(Integer)-mean clustering for ITERS(Integer) iterations");
+        System.out.println("representatives J - Print the J(Integer) number of representative(s) from each cluster");
         System.out.println("quit - Quit this program");
     }
 //index C:\Users\Baekjun Kim\Desktop\U of Iowa\2017 - 2018 academic year\2018 Spring (13sh - 97 total)\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\Assignment\Project\easy_sanity_test.txt
+
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         HashSet<String> words = new HashSet<>();
@@ -24,6 +26,7 @@ public class Main {
         HashMap<String, HashMap<String, Double>> vectors = new HashMap<>();
         ArrayList<String> topj = new ArrayList<>();
         String similarityMeasure = "cos";
+        ArrayList<HashMap<String, Double>> centroid = null;
         ArrayList<HashSet<String>> cluster = new ArrayList<>();
 
         while (true) {
@@ -49,12 +52,13 @@ public class Main {
             } else if (command.equals("vectors")) {
                 System.out.println(vectors);
             } else if (command.contains("topj ")) {
+                topj.clear();
                 int space = command.lastIndexOf(" ");
                 String Q = command.substring(5, space);
                 Integer J = Integer.parseInt(command.substring(space + 1));
                 TopjCommand sanity = new TopjCommand(similarityMeasure, Q);
                 if (sanity.Qcheck(words)) {
-                    PriorityQueue<Entry> pairs = sanity.topj(words, vectors, topj);
+                    PriorityQueue<Entry> pairs = sanity.topj(words, vectors);
                     for (int i = 0; i < J; i++) {
                         topj.add("Pair" + pairs.poll().toString());
                     }
@@ -81,11 +85,31 @@ public class Main {
                 spaces[0] = command.indexOf(" ");
                 spaces[1] = command.lastIndexOf(" ");
                 Integer K = Integer.parseInt(command.substring(spaces[0] + 1, spaces[1]));
-                Integer iters = Integer.parseInt(command.substring(spaces[1]+1));
-                Kmeans kmean  = new Kmeans(K, iters);
-                kmean.k_means(cluster, words, vectors);
-                System.out.println(cluster);
-                
+                Integer iters = Integer.parseInt(command.substring(spaces[1] + 1));
+                Kmeans kmean = new Kmeans(K, iters);
+                centroid = new ArrayList<>(K);
+                kmean.k_means(centroid, cluster, words, vectors);
+                for (int k = 0; k < K; k++) {
+                    System.out.println("Cluster " + k);
+                    System.out.println(cluster.get(k));
+                }
+            } else if (command.contains("representatives ")) {
+                int space = command.indexOf(" ");
+                Integer J = Integer.parseInt(command.substring(space + 1));
+                if (centroid == null) {
+                    System.err.println("Cluster is empty");
+                } else {
+                    for (int k = 0; k < centroid.size(); k++) {
+                        System.out.println(J + " representative(s) from Cluster " + k);
+                        TopjCommand sanity = new TopjCommand("euc", centroid.get(k));
+                        PriorityQueue<Entry> pairs = sanity.topj(cluster.get(k), vectors);
+                        ArrayList<String> rep = new ArrayList<String>(J);
+                        for (int j = 0; j < J; j++) {
+                            rep.add(pairs.poll().key);
+                        }
+                        System.out.println(rep);
+                    }
+                }
             } else if (command.equals("quit")) {
                 System.exit(0);
             } else {

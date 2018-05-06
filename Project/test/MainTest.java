@@ -17,12 +17,7 @@ public class MainTest {
         temp1.put("1", 1.0);
         temp1.put("2", 4.0);
         temp1.put("3", 1.0);
-        temp1.put("4", 0.0);
-        temp1.put("5", 0.0);
-        temp1.put("6", 0.0);
         temp2.put("1", 3.0);
-        temp2.put("2", 0.0);
-        temp2.put("3", 0.0);
         temp2.put("4", 1.0);
         temp2.put("5", 1.0);
         temp2.put("6", 2.0);
@@ -38,12 +33,7 @@ public class MainTest {
         temp1.put("1", 1.0);
         temp1.put("2", 4.0);
         temp1.put("3", 1.0);
-        temp1.put("4", 0.0);
-        temp1.put("5", 0.0);
-        temp1.put("6", 0.0);
         temp2.put("1", 3.0);
-        temp2.put("2", 0.0);
-        temp2.put("3", 0.0);
         temp2.put("4", 1.0);
         temp2.put("5", 1.0);
         temp2.put("6", 2.0);

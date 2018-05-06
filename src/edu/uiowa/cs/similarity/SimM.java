@@ -11,8 +11,8 @@ public class SimM {
     }
 
     public double similarity(HashMap<String, Double> Qvalue, HashMap<String, Double> Jvalue) {
-        if (measure.equals("cos")) {
-            return cos(Qvalue, Jvalue);
+        if (measure.equals("cosine")) {
+            return cosine(Qvalue, Jvalue);
         } else if (measure.equals("euc")) {
             return euc(Qvalue, Jvalue);
         } else if (measure.equals("eucnorm")) {
@@ -22,7 +22,7 @@ public class SimM {
         }
     }
 
-    public double cos(HashMap<String, Double> Qvalue, HashMap<String, Double> Jvalue) {
+    public double cosine(HashMap<String, Double> Qvalue, HashMap<String, Double> Jvalue) {
         Set<String> keys;
         if (Qvalue.size() > Jvalue.size()) {
             keys = Jvalue.keySet();

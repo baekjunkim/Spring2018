@@ -11,9 +11,9 @@ public class Main {
         System.out.println("index FILE - Read in and index the file given by FILE(String)");
         System.out.println("sentences - Print currently indexed sentences");
         System.out.println("vectors - Print semantic descriptor vector for each unique word");
-        System.out.println("topj WORD J - Print the J(Integer) most simliar words to WORD(String)");
-        System.out.println("measure MEASURE - Change similarity measure for topj as MEASURE (choose one from \"cos\", \"euc\", and \"eucnorm\")");
-        System.out.println("kmeans K ITERS - Run and print K(Integer)-mean clustering for ITERS(Integer) iterations");
+        System.out.println("topj Q J - Print the J(Integer) most simliar words to Q(String)");
+        System.out.println("measure SIM - Change similarity measure for topj as SIM (choose one from \"cosine\", \"euc\", and \"eucnorm\")");
+        System.out.println("kmeans K ITERS - Run and print K(Integer)-mean clustering for ITERS(Integer) number of iterations");
         System.out.println("representatives J - Print the J(Integer) number of representative(s) from each cluster");
         System.out.println("quit - Quit this program");
     }
@@ -25,7 +25,7 @@ public class Main {
         ArrayList<ArrayList<String>> sentences = new ArrayList<>();
         HashMap<String, HashMap<String, Double>> vectors = new HashMap<>();
         ArrayList<String> topj = new ArrayList<>();
-        String similarityMeasure = "cos";
+        String similarityMeasure = "cosine";
         ArrayList<HashMap<String, Double>> centroid = null;
         ArrayList<HashSet<String>> cluster = new ArrayList<>();
 
@@ -68,8 +68,8 @@ public class Main {
                 }
             } else if (command.contains("measure ")) {
                 String measurement = command.substring(8);
-                if (measurement.equals("cos")) {
-                    similarityMeasure = "cos";
+                if (measurement.equals("cosine")) {
+                    similarityMeasure = "cosine";
                     System.out.println("Similarity measure is cosine similarity");
                 } else if (measurement.equals("euc")) {
                     similarityMeasure = "euc";

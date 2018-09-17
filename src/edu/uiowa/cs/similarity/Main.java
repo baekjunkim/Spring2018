@@ -17,7 +17,6 @@ public class Main {
         System.out.println("representatives J - Print the J(Integer) number of representative(s) from each cluster");
         System.out.println("quit - Quit this program");
     }
-//index C:\Users\Baekjun Kim\Desktop\U of Iowa\2017 - 2018 academic year\2018 Spring (13sh - 97 total)\CS 2230 Computer Science 2 - Data Structures (Brandon Myers)\Assignment\Project\easy_sanity_test.txt
 
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
